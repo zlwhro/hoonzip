@@ -4,16 +4,20 @@
 
 ### 기본 사용법
 hoonzip zipfile
+
 ![image](https://github.com/zlwhro/hoonzip/assets/113174616/befc3daf-e0aa-4e74-8972-b98537395f9e)
 
 
-hoonzip [-l] [-d exdir] zipfile
+
 ### 파일 리스팅
+hoonzip -l zipfile
+
 ![image](https://github.com/zlwhro/hoonzip/assets/113174616/6545528f-6757-4b30-b969-f82ceff8edb2)
 
 -l 옵션은 저장된 파일의 리스트를 출력합니다.
 
 ### 저장 경로 지정
+hoonzip -d exdir zipfile
 
 ![image](https://github.com/zlwhro/hoonzip/assets/113174616/93f5edac-c90a-4015-84d9-102156bf47b7)
 
