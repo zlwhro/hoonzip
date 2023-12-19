@@ -5,6 +5,7 @@
 
 hoonzip [-l] [-d exdir] zipfile
 ### 파일 리스팅
+![image](https://github.com/zlwhro/hoonzip/assets/113174616/6545528f-6757-4b30-b969-f82ceff8edb2)
 
 -l 옵션은 저장된 파일의 리스트를 출력합니다.
 
