@@ -272,7 +272,7 @@ int main(int argc, char**argv)
             //해당 위치에 파일이 이미 존재하는지 확인
             struct stat st = {0};
             if (stat(extract_path, &st) == -1 && errno == ENOENT) {
-
+                puts("======================================");
                 printf("extract %s\n",extract_path);
                 if(cd_entries[i].external_att & 0x20)
                 {
