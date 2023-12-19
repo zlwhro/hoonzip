@@ -7,9 +7,8 @@ hoonzip zipfile
 
 ![image](https://github.com/zlwhro/hoonzip/assets/113174616/befc3daf-e0aa-4e74-8972-b98537395f9e)
 
-
-
 ### 파일 리스팅
+
 hoonzip -l zipfile
 
 ![image](https://github.com/zlwhro/hoonzip/assets/113174616/6545528f-6757-4b30-b969-f82ceff8edb2)
