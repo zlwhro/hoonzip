@@ -41,6 +41,14 @@ int read_local_file_header(local_file_header* lfh, FILE *f)
     return 0;
  }
 
+ void free_lh(local_file_header* lfh)
+ {
+    if(lfh->file_name_len > 0)
+        free(lfh->file_name);
+    if(lfh->extra_len > 0)
+        free(lfh->extra_field);
+ }
+
 
 // Central directory entry 읽기
 int read_CDEntry(CDEntry* cd_data, FILE *f)
@@ -59,13 +67,14 @@ int read_CDEntry(CDEntry* cd_data, FILE *f)
     // 파일 이름 읽기
     cd_data->filename = malloc(cd_data->filename_len+1);
     result = fread(cd_data->filename, cd_data->filename_len, 1, f);
+    cd_data->filename[cd_data->filename_len] = '\0';
     if(result != 1)
         return 3;
 
     //엑스트라 필드가 있다면 읽기
     if(cd_data->extra_len > 0)
     {
-        cd_data->extra = malloc(cd_data->extra_len+1);
+        cd_data->extra = malloc( cd_data->extra_len+1);
         result = fread(cd_data->extra, cd_data->extra_len, 1, f);
         if(result != 1)
             return 3;
@@ -73,7 +82,7 @@ int read_CDEntry(CDEntry* cd_data, FILE *f)
     //파일 코멘트가 있다면 읽기
     if(cd_data->filecomment_len > 0)
     {
-        cd_data->comment = malloc(cd_data->filecomment_len+1);
+        cd_data->comment = malloc( cd_data->filecomment_len+1);
         result = fread(cd_data->comment, cd_data->filecomment_len, 1, f);
         if(result != 1)
             return 3;
@@ -91,6 +100,17 @@ int read_CDEntry(CDEntry* cd_data, FILE *f)
     return 0;
 }
 
+void free_cd_entry(CDEntry* cd_data)
+{
+    if(cd_data->filename_len !=0)
+        free(cd_data->filename);
+
+    if(cd_data->extra_len >0)
+        free(cd_data->extra);
+
+    if(cd_data->filecomment_len > 0)
+        free(cd_data->comment);
+}
 //EOCD 레코드 읽기
 int read_EOCD(EOCD* eocd, FILE* f, uint file_size)
 {
@@ -193,8 +213,8 @@ int main(int argc, char**argv)
     }
    
     //central directory 레코드와 local file header 메모리 할당
-    cd_entries = malloc(sizeof(CDEntry) * eocd.num_of_CDR);
-    local_file_headers = malloc(sizeof(local_file_header) * eocd.num_of_CDR);
+    cd_entries = malloc( sizeof(CDEntry) * eocd.num_of_CDR);
+    local_file_headers = malloc( sizeof(local_file_header) * eocd.num_of_CDR);
 
     
     //central directory 읽기
@@ -295,8 +315,15 @@ int main(int argc, char**argv)
                 fprintf(stderr, "file %s already exist\n",extract_path);
                 exit(1);
             }
+
+            free_lh(&local_file_headers[i]);
         }
     }
+    for(int i=0; i<eocd.total_CDR; ++i)
+        free_cd_entry(&cd_entries[i]);
+
+    free(cd_entries);
+    free(local_file_headers);
 
     return 0;
 }

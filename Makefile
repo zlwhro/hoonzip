@@ -1,11 +1,11 @@
 hoonzip: main.o decomp.o
-	gcc -o hoonzip main.o decomp.o
+	gcc -fsanitize=address -ggdb -o hoonzip main.o decomp.o
 
 main.o: main.c
-	gcc -c main.c hoonzip.h
+	gcc -fsanitize=address -ggdb -c main.c hoonzip.h
 
 decomp.o : decomp.c decomp.h
-	gcc -c decomp.c decomp.h  -march=native
+	gcc -fsanitize=address -ggdb -c decomp.c decomp.h  -march=native
 
 clean:
 	rm *.o *.gch
