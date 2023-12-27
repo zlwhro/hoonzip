@@ -65,7 +65,7 @@ typedef struct local_file_header{
     char *extra_field;
 }__attribute__((packed)) local_file_header;
 
-const char *compression_method[] = {"STORE","","","","","","","","DEFLATE"};
+const char *compression_method[] = {"STORE","","","","","","","","DEFLATE", "not support"};
 
 enum zip_option {decomp, list};
 void print_usage();

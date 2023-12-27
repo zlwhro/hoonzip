@@ -40,7 +40,6 @@ int inflate(uchar *buffer, uint idx, uint filesize, Huffman* alp_literal, Huffma
 void set_static_table()
 {
     static int static_set = 0;
-
     if(static_set)
     {
         return;

@@ -238,17 +238,17 @@ int main(int argc, char**argv)
         {
             puts("=====================================================");
             printf("name %s\n",cd_entries[i].filename);
-            if(cd_entries[i].external_att & 0x20)
-            {
-                printf("compression method %s\n",compression_method[cd_entries[i].method]);
-                printf("compressed size %d\n",cd_entries[i].compressed_size);
-                printf("original size %d\n",cd_entries[i].uncompressed_size);
-                fseek(f, cd_entries[i].local_header_offset, SEEK_SET);
-                result = read_local_file_header(&local_file_headers[i], f);
-                long dataoffset = ftell(f);
-                //압축 데이터가 저장된 오프셋
-                printf("compressed data offset: %ld\n",dataoffset);
-            }
+            //out of bound patch
+            if(cd_entries[i].method != 8)
+                cd_entries[i].method = 9;
+            printf("compression method %s\n",compression_method[cd_entries[i].method]);
+            printf("compressed size %d\n",cd_entries[i].compressed_size);
+            printf("original size %d\n",cd_entries[i].uncompressed_size);
+            fseek(f, cd_entries[i].local_header_offset, SEEK_SET);
+            result = read_local_file_header(&local_file_headers[i], f);
+            long dataoffset = ftell(f);
+            //압축 데이터가 저장된 오프셋
+            printf("compressed data offset: %ld\n",dataoffset);
 
         }
     }
@@ -301,7 +301,7 @@ int main(int argc, char**argv)
             if (stat(extract_path, &st) == -1 && errno == ENOENT) {
                 puts("======================================");
                 printf("extract %s\n",extract_path);
-                if(cd_entries[i].external_att & 0x20)
+                if(!(cd_entries[i].external_att & 0x10))
                 {
                     //Deflate 압축이 아닌 경우
                     if(cd_entries[i].method != 8)
