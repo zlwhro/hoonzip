@@ -162,6 +162,7 @@ int main(int argc, char**argv)
     char opt;
     char *exdir = NULL;
     enum zip_option zop  = decomp;
+    puts("let\'s go\n");
 
     //옵션 읽기 
     // -l 파일 리스팅
@@ -242,6 +243,10 @@ int main(int argc, char**argv)
                 printf("compression method %s\n",compression_method[cd_entries[i].method]);
                 printf("compressed size %d\n",cd_entries[i].compressed_size);
                 printf("original size %d\n",cd_entries[i].uncompressed_size);
+                fseek(f, cd_entries[i].local_header_offset, SEEK_SET);
+                result = read_local_file_header(&local_file_headers[i], f);
+                long dataoffset = ftell(f);
+                printf("compressed data offset: %ld\n",dataoffset);
             }
 
         }
