@@ -162,7 +162,6 @@ int main(int argc, char**argv)
     char opt;
     char *exdir = NULL;
     enum zip_option zop  = decomp;
-    puts("let\'s go\n");
 
     //옵션 읽기 
     // -l 파일 리스팅
@@ -231,6 +230,7 @@ int main(int argc, char**argv)
     }
 
     //저장된 파일 리스트 출력
+
     if(zop==list)
     {
         puts("file list");
@@ -246,6 +246,7 @@ int main(int argc, char**argv)
                 fseek(f, cd_entries[i].local_header_offset, SEEK_SET);
                 result = read_local_file_header(&local_file_headers[i], f);
                 long dataoffset = ftell(f);
+                //압축 데이터가 저장된 오프셋
                 printf("compressed data offset: %ld\n",dataoffset);
             }
 
@@ -261,6 +262,7 @@ int main(int argc, char**argv)
             //폴더가 없다면 생성
             if (stat(exdir, &st) == -1 && errno == ENOENT) {
                 result = mkdir(exdir, 0700);
+                //폴더 생성 실패
                 if(result !=0)
                 {
                     fputs("please check directory name\n",stderr);
@@ -294,13 +296,14 @@ int main(int argc, char**argv)
             }
             strncat(extract_path, cd_entries[i].filename, MAXPATH -1 - strlen(extract_path) );
 
-            //해당 위치에 파일이 이미 존재하는지 확인
+            //해당 위치에 같은 이름의 파일이 이미 존재하는지 확인
             struct stat st = {0};
             if (stat(extract_path, &st) == -1 && errno == ENOENT) {
                 puts("======================================");
                 printf("extract %s\n",extract_path);
                 if(cd_entries[i].external_att & 0x20)
                 {
+                    //Deflate 압축이 아닌 경우
                     if(cd_entries[i].method != 8)
                     {
                         fputs("not supported compression method\n",stderr);
@@ -308,6 +311,7 @@ int main(int argc, char**argv)
                     }
                     ZIP_Decompress(f, extract_path, cd_entries[i].uncompressed_size);
                 }
+                //폴더인 경우
                 else if(cd_entries[i].external_att & 0x10)
                 {   
                     struct stat st = {0};

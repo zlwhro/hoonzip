@@ -36,6 +36,7 @@ int get_maxbit(char *list, int len);
 
 int inflate(uchar *buffer, uint idx, uint filesize, Huffman* alp_literal, Huffman* alp_dist);
 
+//BTYPE 01일때 미리 정의된 static huffman code 생성하기
 void set_static_table()
 {
     static int static_set = 0;
@@ -78,6 +79,7 @@ void set_static_table()
     static_set = 1;
 }
 
+//비트 단위로 파일 읽기
 ullong bit_reader(int bitsize, FILE* f)
 {
     // 아래 4개의 변수는 static으로 선언해서 함수 리턴 이후에도 값을 기억하도록 한다.
@@ -112,14 +114,13 @@ ullong bit_reader(int bitsize, FILE* f)
         bitsize = (8 - cur_bit)%8; //현재 바이트에서 읽은 비트가 없다면 그대로 리턴한다.
     }
 
-
+    //0 비트 읽기 요청은 0리턴
     if(bitsize == 0)
         return 0;
 
-    
     nextbit = (cur_bit + bitsize) % 64; //64 비트가 넘어가면 다시 0부터 시작
 
-    //_bextr_u64 는 intrinsic 함수로 1개의 어셈블리어 명령어로 원하는 비트를 읽을 수 있다.
+    //_bextr_u64 는 bextr 인스트럭션으로 컴파일된다. 레지스터 혹은 메모리에서 원하는 비트만 읽을 수 있는 인스트럭션
     if(nextbit > cur_bit)
         ret =  _bextr_u64(bit_buffer[cur_idx], cur_bit, bitsize); 
     
@@ -204,6 +205,7 @@ void build_tree(uchar* clen, int max, Huffman *alphabet)
     }
 }
 
+// BTYPE 10일때 블록에서 코드 읽기
 void code_build(Huffman *alpha_literal, Huffman *alpha_dist)
 {
     uint order[] = {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
