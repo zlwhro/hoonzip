@@ -14,7 +14,7 @@ hoonzip -l zipfile
 ![image](https://github.com/zlwhro/hoonzip/assets/113174616/c79354df-27b2-4d90-80ff-710ca0a49332)
 
 
--l 옵션은 저장된 파일의 리스트를 출력합니다.
+-l 옵션은 저장된 파일의 리스트를 출력합니다. 압축을 해제할때 -l 옵션으로 zip 파일이 DEFLATE 압축을 쓰는지 확인하고 압축을 해제해주세요
 
 ### 저장 경로 지정
 hoonzip -d exdir zipfile
