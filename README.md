@@ -11,7 +11,8 @@ hoonzip zipfile
 
 hoonzip -l zipfile
 
-![image](https://github.com/zlwhro/hoonzip/assets/113174616/6545528f-6757-4b30-b969-f82ceff8edb2)
+![image](https://github.com/zlwhro/hoonzip/assets/113174616/c79354df-27b2-4d90-80ff-710ca0a49332)
+
 
 -l 옵션은 저장된 파일의 리스트를 출력합니다.
 
