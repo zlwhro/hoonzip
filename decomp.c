@@ -254,18 +254,38 @@ void code_build(Huffman *alpha_literal, Huffman *alpha_dist)
                 exit(1);
             }
             extra =bit_reader(2, NULL)+3;
+            //out of bound  방지
+            //이 버그를 패치하고 퍼징을 오래 해도 새로운 버그를 찾기 어려워 지금은 주석처리 했습니다.
+            //이대로 테스트 해보고 나중에 주석을 풀고 테스트 해보세요
+            // if(idx + extra > HLIT +257)
+            // {
+            //     fputs("error while reading compressed data\n",stderr);
+            //     exit(1);
+            // }
             memset(&literal_len[idx], literal_len[idx-1], extra);
             idx += extra;
         }
         else if(d == 17)
         {
             extra =bit_reader(3, NULL)+3;
+            //out of bound  방지
+            // if(idx + extra > HLIT +257)
+            // {
+            //     fputs("error while reading compressed data\n",stderr);
+            //     exit(1);
+            // }
             memset(&literal_len[idx], 0, extra);
             idx += extra;
         }
         else if(d == 18)
         {
             extra =bit_reader(7, NULL)+11;
+            //out of bound  방지
+            // if(idx + extra > HLIT +257)
+            // {
+            //     fputs("error while reading compressed data\n",stderr);
+            //     exit(1);
+            // }
             memset(&literal_len[idx], 0, extra);
             idx += extra;
         }
@@ -292,19 +312,38 @@ void code_build(Huffman *alpha_literal, Huffman *alpha_dist)
                     fputs("error while reading commpressed data\n",stderr);
                     exit(1);
                 }
+                
                 extra =bit_reader(2, NULL)+3;
+                //out of bound  방지
+                // if(idx + extra > HDIST+1)
+                // {
+                //     fputs("error while reading compressed data\n",stderr);
+                //     exit(1);
+                // }
                 memset(&dist[idx], dist[idx-1], extra);
                 idx += extra;
             }
             else if(d == 17)
             {
                 extra =bit_reader(3, NULL)+3;
+                //out of bound  방지
+                // if(idx + extra > HDIST+1)
+                // {
+                //     fputs("error while reading compressed data\n",stderr);
+                //     exit(1);
+                // }
                 memset(&dist[idx], 0, extra);
                 idx += extra;
             }
             else if(d == 18)
             {
                 extra =bit_reader(7, NULL)+11;
+                //out of bound  방지
+                // if(idx + extra > HDIST+1)
+                // {
+                //     fputs("error while reading compressed data\n",stderr);
+                //     exit(1);
+                // }
                 memset(&dist[idx], 0, extra);
                 idx += extra;
             }

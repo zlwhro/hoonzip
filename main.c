@@ -213,8 +213,8 @@ int main(int argc, char**argv)
     }
    
     //central directory 레코드와 local file header 메모리 할당
-    cd_entries = malloc( sizeof(CDEntry) * eocd.num_of_CDR);
-    local_file_headers = malloc( sizeof(local_file_header) * eocd.num_of_CDR);
+    cd_entries = malloc( sizeof(CDEntry) * eocd.total_CDR);
+    local_file_headers = malloc( sizeof(local_file_header) * eocd.total_CDR);
 
     
     //central directory 읽기
@@ -282,7 +282,7 @@ int main(int argc, char**argv)
             result = read_local_file_header(&local_file_headers[i], f);
             if(result != 0)
             {
-                fputs("error %d while reading local file header\n",stderr);
+                fprintf(stderr,"error %d while reading local file header\n", result);
                 exit(1);
             }
             //지정한 경로가 있을 경우 파일 이름 앞에 붙이기
